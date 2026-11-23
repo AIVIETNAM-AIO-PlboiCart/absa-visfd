@@ -18,6 +18,11 @@ models/*
 *.pickle
 *.joblib
 
+# ---- Kết quả chấm: mỗi người tự chạy evaluate.py, không commit (tránh conflict summary.csv;
+#      errors_*.csv chứa text dataset). Leader tổng hợp bảng cuối. ----
+results/*
+!results/README.md
+
 # ---- Bí mật ----
 .env
 .env.*

@@ -56,9 +56,24 @@ def read_pred(path: str | Path) -> pd.DataFrame:
     return df
 
 
-def write_pred(df: pd.DataFrame, path: str | Path) -> None:
-    """Ghi file dự đoán: kiểm tra format trước khi ghi, đúng thứ tự cột."""
-    df = df[PRED_COLUMNS].astype(str)
+def _write(df: pd.DataFrame, columns: list[str], path: str | Path) -> None:
+    missing = [c for c in columns if c not in df.columns]
+    if missing:
+        raise FormatError(f"{path}: DataFrame thiếu cột {missing}")
+    df = df[columns].astype(str)
     check_values(df, path)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
+
+
+def write_pred(df: pd.DataFrame, path: str | Path) -> None:
+    """Ghi file dự đoán: kiểm tra format trước khi ghi, đúng thứ tự cột."""
+    _write(df, PRED_COLUMNS, path)
+
+
+def write_gold(df: pd.DataFrame, path: str | Path) -> None:
+    """Ghi file gold (dùng trong scripts/download_data.py): kiểm tra format, đúng thứ tự cột."""
+    bad = df.loc[~df["has_others"].astype(str).isin(["0", "1"]), "id"].tolist()
+    if bad:
+        raise FormatError(f"{path}: has_others phải là 0/1, sai ở {bad[:5]}")
+    _write(df, GOLD_COLUMNS, path)

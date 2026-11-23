@@ -6,7 +6,15 @@
   1. Tạo repo Git, quy định cấu trúc thư mục và quy trình branch/PR.
   2. Chốt format file dự đoán và danh sách nhãn chung.
   3. Viết `evaluate.py`.
-- **Trạng thái:** Bản nháp, chờ Leader duyệt.
+- **Trạng thái:** Đã triển khai. Các điểm thay đổi so với bản nháp ghi ở mục "Thay đổi khi triển khai" ngay bên dưới. Nếu nội dung bên dưới mâu thuẫn với `docs/format_spec.md` thì **`format_spec.md` là bản đúng**.
+
+> **Thay đổi khi triển khai (2026-11-23):**
+> 1. **Tên file dự đoán có thêm split:** `pred_<method>[_<cấu hình>]_<split>.csv` (ví dụ `pred_tfidf_val.csv`). Lý do: mỗi phương pháp cần cả file val (để tuning) và file test (chấm cuối), mà `evaluate.py` yêu cầu tập id của pred khớp chính xác với gold.
+> 2. **`results/` không commit** (khác mục 5.1). Lý do: ai chạy `evaluate.py` cũng nối thêm vào `summary.csv` nên mọi PR đều bị conflict; ngoài ra `errors_*.csv` chứa nguyên văn bình luận của dataset. Thành viên dán bảng kết quả vào PR; Leader chạy lại để tổng hợp bảng cuối.
+> 3. **Có thêm tập con LLM trên val:** `data/splits/llm_subset_val_ids.txt` (100 id) để D thiết kế prompt mà không chạm vào test. Cả 2 file sinh bằng `scripts/make_llm_subset.py`.
+> 4. **`download_data.py` do A viết** (đóng câu hỏi mở số 3). Leader cung cấp khung, `write_gold` và test.
+> 5. **Id đếm từ 1** theo thứ tự dòng trong file gốc; split `dev` đổi tên thành `val`.
+> 6. **Bổ sung:** `src/common/console.py` (tránh lỗi in tiếng Việt trên console Windows), `docs/huggingface.md`, `.gitattributes` (thống nhất ký tự xuống dòng LF), `pyproject.toml` (cấu hình pytest).
 
 > Quy ước trong tài liệu:
 > - **[Đã chốt]** là quyết định của Leader.

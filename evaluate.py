@@ -2,9 +2,9 @@
 
 Cách gọi:
     python evaluate.py --gold data/processed/gold_val.csv \
-                       --pred predictions/pred_tfidf.csv \
-                       --name tfidf \
-                       [--ids data/splits/llm_subset_ids.txt] \
+                       --pred predictions/pred_tfidf_val.csv \
+                       --name tfidf_val \
+                       [--ids data/splits/llm_subset_val_ids.txt] \
                        [--out results/]
 
 Mỗi bình luận là một tập cặp (khía cạnh, cảm xúc), bỏ qua ô `none`.
@@ -27,6 +27,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.common.console import setup_console
 from src.common.io import FormatError, read_gold, read_pred
 from src.common.labels import ASPECTS, NONE, PRED_COLUMNS, SENTIMENTS
 
@@ -247,10 +248,7 @@ def parse_args(argv=None) -> argparse.Namespace:
 
 
 def main(argv=None) -> None:
-    for stream in (sys.stdout, sys.stderr):  # tránh lỗi in tiếng Việt trên console Windows
-        if hasattr(stream, "reconfigure"):
-            stream.reconfigure(encoding="utf-8")
-
+    setup_console()  # tránh lỗi in tiếng Việt trên console Windows
     args = parse_args(argv)
     if not re.fullmatch(r"[A-Za-z0-9_\-]+", args.name):
         sys.exit("LỖI: --name chỉ được chứa chữ, số, '_' và '-'")
