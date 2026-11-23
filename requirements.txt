@@ -1,16 +1,17 @@
-# Phiên bản cụ thể: chốt khi cài đặt lần đầu (pip freeze), xem spec mục 7.
+# NOTE: keep this file ASCII-only (pip on Windows reads it with cp1252, not UTF-8).
+# Exact versions: pin after first install (pip freeze).
 
-# --- Chung ---
+# --- Common ---
 pandas>=2.0
 numpy>=1.24
 pyyaml>=6.0
 python-dotenv>=1.0
 tqdm
 
-# --- Kiểm thử ---
+# --- Testing ---
 pytest>=7.0
 
-# --- Tiền xử lý (A + C thống nhất bộ tách từ; bỏ comment khi chốt) ---
+# --- Preprocessing (A + C must agree on the word segmenter; uncomment when decided) ---
 # py_vncorenlp
 # underthesea
 
@@ -23,7 +24,7 @@ transformers>=4.40
 huggingface_hub>=0.23
 
 # --- LLM (D) ---
-# (thêm SDK của nhà cung cấp LLM được chọn)
+# (add the SDK of the chosen LLM provider)
 
 # --- API + demo (D) ---
 fastapi

@@ -11,5 +11,5 @@ results_dir: results
 models_dir: models
 
 # Model PhoBERT trên Hugging Face Hub (C cập nhật khi push bản mới)
-hf_model_repo: ""          # ví dụ: <ten-org>/phobert-absa-visfd
-hf_model_revision: ""      # luôn ghim theo tag, ví dụ: v1.0
+hf_model_repo: "absa-visfd-team/phobert-absa-visfd" # ví dụ: <ten-org>/phobert-absa-visfd
+hf_model_revision: "" # luôn ghim theo tag, ví dụ: v1.0
