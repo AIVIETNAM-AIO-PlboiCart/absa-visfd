@@ -1,0 +1,15 @@
+# Mọi đường dẫn của dự án. Đường dẫn tương đối tính từ thư mục gốc repo.
+# Ghi đè bằng biến môi trường ABSA_<TÊN_KHÓA_IN_HOA>, ví dụ ABSA_DATA_DIR=/content/drive/...
+# KHÔNG viết cứng đường dẫn tuyệt đối trong code.
+
+data_dir: data
+raw_dir: data/raw
+processed_dir: data/processed
+splits_dir: data/splits
+predictions_dir: predictions
+results_dir: results
+models_dir: models
+
+# Model PhoBERT trên Hugging Face Hub (C cập nhật khi push bản mới)
+hf_model_repo: ""          # ví dụ: <ten-org>/phobert-absa-visfd
+hf_model_revision: ""      # luôn ghim theo tag, ví dụ: v1.0

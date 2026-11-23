@@ -1,0 +1,57 @@
+# Quy ước format và nhãn
+
+> Tài liệu chính thức. Danh sách nhãn trong code: `src/common/labels.py` (nguồn duy nhất).
+> Đọc/ghi file: dùng `src/common/io.py` (`read_gold`, `read_pred`, `write_pred`).
+
+## 1. Nhãn
+
+| Khía cạnh (cột) | Tiếng Việt |
+|---|---|
+| SCREEN | Màn hình |
+| CAMERA | Camera |
+| FEATURES | Tính năng |
+| BATTERY | Pin |
+| PERFORMANCE | Hiệu năng |
+| STORAGE | Bộ nhớ |
+| DESIGN | Thiết kế |
+| PRICE | Giá |
+| GENERAL | Đánh giá chung |
+| SER&ACC | Dịch vụ & phụ kiện |
+
+Giá trị mỗi ô: `positive`, `negative`, `neutral`, hoặc `none` (khía cạnh không được nhắc đến).
+
+## 2. Chuyển nhãn gốc `{ASPECT#Polarity};...`
+
+- `Positive` / `Negative` / `Neutral` → chữ thường.
+- Khía cạnh không xuất hiện → `none`.
+- **Bỏ tag `{OTHERS}`** (đã chốt). Bình luận chỉ có OTHERS → 10 ô `none`, cột phụ `has_others = 1`. Cột này không dùng để chấm.
+- Một khía cạnh có 2 cảm xúc khác nhau trong cùng bình luận: **CHƯA CHỐT**, chờ số liệu EDA của A.
+- Tag lạ (khía cạnh ngoài danh sách) → script **báo lỗi**, không bỏ qua.
+
+## 3. File gold: `data/processed/gold_{train,val,test}.csv`
+
+```
+id,text,n_star,has_others,SCREEN,CAMERA,FEATURES,BATTERY,PERFORMANCE,STORAGE,DESIGN,PRICE,GENERAL,SER&ACC
+```
+
+`text` là văn bản **gốc**, chưa tiền xử lý.
+
+## 4. File dự đoán: `predictions/pred_<method>[_<cấu hình>].csv`
+
+```
+id,SCREEN,CAMERA,FEATURES,BATTERY,PERFORMANCE,STORAGE,DESIGN,PRICE,GENERAL,SER&ACC
+```
+
+Ví dụ với bình luận "Máy chạy mượt, pin trâu nhưng camera chụp đêm tệ, giá hơi chát":
+
+```
+id,SCREEN,CAMERA,FEATURES,BATTERY,PERFORMANCE,STORAGE,DESIGN,PRICE,GENERAL,SER&ACC
+test_00001,none,negative,none,positive,positive,none,none,negative,none,none
+```
+
+## 5. Quy tắc chung
+
+- UTF-8, dấu phẩy, header đúng thứ tự như trên.
+- Gold và pred được ghép **theo `id`**, không theo thứ tự dòng.
+- `id` = `<split>_<số thứ tự trong file gốc, 5 chữ số>` (`train_00001`, `val_00001`, `test_00001`). Sinh một lần trong `scripts/download_data.py`, không bao giờ đổi.
+- **Ô trống hoặc NaN là lỗi format.** Không có khía cạnh thì ghi `none`.

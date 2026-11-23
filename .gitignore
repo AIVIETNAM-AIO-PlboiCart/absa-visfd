@@ -1,0 +1,42 @@
+# ---- Dữ liệu: KHÔNG commit (license UIT-ViSFD chưa rõ) ----
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+# data/splits/ ĐƯỢC commit (llm_subset_ids.txt)
+
+# ---- Model / checkpoint: lưu trên Hugging Face Hub ----
+models/*
+!models/.gitkeep
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# ---- Bí mật ----
+.env
+.env.*
+!.env.example
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+*.egg-info/
+
+# ---- Notebook / IDE / OS ----
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Log huấn luyện ----
+wandb/
+runs/
+lightning_logs/
