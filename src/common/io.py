@@ -61,4 +61,4 @@ def write_pred(df: pd.DataFrame, path: str | Path) -> None:
     df = df[PRED_COLUMNS].astype(str)
     check_values(df, path)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(path, index=False, encoding="utf-8")
+    df.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")

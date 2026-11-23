@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# Cho phép `pytest` (không cần `python -m`) import được evaluate.py và src/ từ gốc repo
+pythonpath = ["."]
+testpaths = ["tests"]
