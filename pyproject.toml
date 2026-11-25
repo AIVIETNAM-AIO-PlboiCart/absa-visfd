@@ -2,3 +2,11 @@
 # Cho phép `pytest` (không cần `python -m`) import được evaluate.py và src/ từ gốc repo
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pandas>=3.1.1",
+    "pytest>=9.2.0",
+    "python-dotenv>=1.2.4",
+    "tqdm>=4.70.1",
+]

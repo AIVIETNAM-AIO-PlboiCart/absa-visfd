@@ -18,6 +18,7 @@ Các bước cần làm:
 from __future__ import annotations
 
 import sys
+import re
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -39,6 +40,14 @@ def make_id(split: str, row_number: int) -> str:
     return f"{split}_{row_number:05d}"
 
 
+TAG_RE = re.compile(r"\{([^{}]*)\}")
+VALID_SENTIMENTS = {"positive", "negative", "neutral"}
+
+
+class ConflictError(ValueError):
+    "Một khía cạnh có 2 cảm xúc khác nhau trong cùng bình luận."
+
+
 def parse_label(label: str) -> tuple[dict[str, str], bool]:
     """Chuyển nhãn gốc sang dict 10 khía cạnh + cờ has_others.
 
@@ -52,7 +61,33 @@ def parse_label(label: str) -> tuple[dict[str, str], bool]:
       - Một khía cạnh có 2 cảm xúc khác nhau: CHƯA CHỐT -> tạm thời raise ValueError
         để đếm số trường hợp; Leader chốt quy tắc sau khi có số liệu.
     """
-    raise NotImplementedError("A viết hàm này")
+    if not isinstance(label, str):
+        raise ValueError(f"label không phải là chuỗi: {label!r}")
+
+    result = {aspect: NONE for aspect in ASPECTS}
+    has_others = False
+
+    for tag in TAG_RE.findall(label):
+        if tag == "OTHERS":
+            has_others = True
+            continue
+
+        if "#" not in tag:
+            raise ValueError(f"Tag sai dạng (thiếu #): {tag!r}")
+        print(repr(tag))
+        aspect, sentiment = tag.split("#", 1)
+        sentiment = sentiment.lower()
+
+        if aspect not in result:
+            raise ValueError(f"Khía cạnh lạ: {aspect!r}")
+        if sentiment not in VALID_SENTIMENTS:
+            raise ValueError(f"Cảm xúc lạ: {sentiment!r}")
+        if result[aspect] not in (NONE, sentiment):
+            raise ConflictError(f"{aspect} có 2 cảm xúc: {result[aspect]} và {sentiment}")
+
+        result[aspect] = sentiment
+    
+    return (result, has_others)
 
 
 def main() -> None:
