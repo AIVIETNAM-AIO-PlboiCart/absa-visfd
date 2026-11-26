@@ -120,7 +120,7 @@ def download_raw(raw_dir: Path) -> None:
 def load_raw(raw_dir: Path, split: str) -> pd.DataFrame:
     df = pd.read_csv(raw_dir / RAW_FILES[split])
     if len(df) != EXPECTED_ROWS[split]:
-        raise SystemExit(f"{split}: chỉ có {len(df)} dòng, phải có {EXPECTED_ROWS[file_name]}!")
+        raise SystemExit(f"{split}: chỉ có {len(df)} dòng, phải có {EXPECTED_ROWS[split]}!")
     return df
 
 
